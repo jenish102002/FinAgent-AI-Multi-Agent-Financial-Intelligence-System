@@ -4,12 +4,11 @@ Welcome to the **FinAgent AI Orchestrator**, an advanced, state-of-the-art Multi
 
 ## 🌟 Key Features
 
-1. **Multi-Agent Orchestration:** Powered by a central LLM Task Planner that contextually infers intents (e.g., *loan application*, *stock query*) and dynamically allocates the request to the required active modular agents.
-2. **Advisory Module (RAG + Market Data):** Infers general advice utilizing FAISS indices for vector grounding alongside live ticker scraping via `yfinance`.
-3. **Fraud Detection Engine:** Identifies geographical anomalies and spending velocity spikes compared to usual baseline parameters.
-4. **KYC / AML Compliance:** Validates transaction attempts spanning high-risk countries, and screens profiles actively against CSV datasets bridging the OFAC (Sanctions) list logic.
-5. **Credit Risk Profiling:** Mathematically evaluates DTI (Debt-to-Income) and parses explicit user-reported credit scores to establish lending eligibility.
-6. **Glassmorphism Bespoke UI:** A beautifully engineered dark-mode React interface running 100% Vanilla CSS, complete with loader animations and dynamic badge generation!
+1. **Multi-Agent Architecture (LangGraph + Python):** Architected a multi-agent AI system orchestrating dynamic routing for fraud detection, credit risk, compliance validation, and financial advisory modules.
+2. **LLM Orchestration Layer:** Designed an advanced LLM orchestration layer relying on NVIDIA NIM (LLaMA 3.1) for routing based on user intent and transaction context. The decision engine consolidates multi-agent paths to output precise verdicts: **APPROVAL / REVIEW / ALERT**.
+3. **Behavioral Fraud Detection:** Built an active algorithmic fraud detection component utilizing behavioral analytics (velocity, geo-patterns, and spending limits) coupled with explainable AI risk scoring metrics.
+4. **Context-Aware RAG Advisory:** Integrated real-time market APIs (`yfinance`) with custom Retrieval-Augmented Generation (RAG) using FAISS vector stores to produce highly personalized, context-aware financial recommendations.
+5. **Glassmorphism Bespoke UI:** A beautifully engineered dark-mode React interface running 100% Vanilla CSS, securely executing requests over the FastAPI decision endpoints.
 
 ---
 
@@ -36,23 +35,30 @@ The backend relies on cyclic graphs computing state in parallel. The Orchestrato
 
 ```mermaid
 graph TD
-    UI[React Frontend UI] -->|JSON Payload| API(FastAPI Endpoint)
-    API --> Intent[Intent Parser Node]
-    Intent --> Planner{Task Planner Node}
+    %% Node Styling Definitions
+    classDef frontend fill:#00ffaa,stroke:#000,stroke-width:2px,color:#0a0e17,font-weight:bold;
+    classDef backend fill:#4a90e2,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+    classDef brain fill:#f5a623,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+    classDef agents fill:#ff5e5e,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+    classDef output fill:#28a745,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+
+    UI[🖥️ React Frontend UI]:::frontend -->|JSON Payload| API(⚙️ FastAPI Endpoint):::backend
+    API --> Intent[🧠 Intent Parser Node]:::brain
+    Intent --> Planner{🧭 Task Planner Node}:::brain
     
     Planner -->|Parallel Routing| Switch((Agent Execution))
     
-    Switch -->|If Required| Fraud[🛡️ Fraud Agent]
-    Switch -->|If Required| Risk[📊 Risk Agent]
-    Switch -->|If Required| Comp[⚖️ Compliance Agent]
-    Switch -->|If Required| Adv[📈 Advisory Agent]
+    Switch -->|If Required| Fraud[🛡️ Fraud Detection]:::agents
+    Switch -->|If Required| Risk[📊 Credit Risk]:::agents
+    Switch -->|If Required| Comp[⚖️ Compliance Validation]:::agents
+    Switch -->|If Required| Adv[📈 Financial Advisory]:::agents
     
-    Fraud --> Consensus[Consolidation Node]
+    Fraud --> Consensus[Consolidation Engine]:::backend
     Risk --> Consensus
     Comp --> Consensus
     Adv --> Consensus
     
-    Consensus -->|Return Final Verdict| API
+    Consensus -->|Return APPROVAL/REVIEW/ALERT| API
 ```
 
 ### 2. React UI Component Structure
@@ -60,15 +66,21 @@ The frontend isolates UI layers into strictly decoupled Layouts, Features, and S
 
 ```mermaid
 graph TD
-    App[App.jsx] --> Home[pages/Home.jsx]
-    Home --> Container[layout/Container.jsx]
+    %% Node Styling Definitions
+    classDef root fill:#9b59b6,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+    classDef layout fill:#34495e,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+    classDef components fill:#1abc9c,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+    classDef network fill:#e67e22,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+
+    App[App.jsx]:::root --> Home[pages/Home.jsx]:::layout
+    Home --> Container[layout/Container.jsx]:::layout
     
-    Home --> Input[InputPanel.jsx]
-    Home --> Decision[DecisionPanel.jsx]
-    Home --> Agents[AgentPanel.jsx]
-    Home --> Explain[ExplainPanel.jsx]
+    Home --> Input[Features/InputPanel]:::components
+    Home --> Decision[Features/DecisionPanel]:::components
+    Home --> Agents[Features/AgentPanel]:::components
+    Home --> Explain[Features/ExplainPanel]:::components
     
-    Input -->|Network Request| API(services/api.js)
+    Input -->|Network Request| API(services/api.js):::network
 ```
 
 ---
