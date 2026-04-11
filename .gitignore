@@ -1,0 +1,33 @@
+# General
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+env/
+finagent_env/
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+build/
+npm-debug.log*
+
+# Mac OS
+.AppleDouble
+.LSOverride
+
+# Project Specific
+finagent/data/*.faiss
+finagent/data/*.pkl
