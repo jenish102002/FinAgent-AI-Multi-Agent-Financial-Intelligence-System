@@ -50,10 +50,11 @@ except Exception as e:
 
 def risk_agent(state: Dict) -> Dict:
     """
-    Hybrid Credit Risk Assessment Agent:
-    1. Deterministic financial rules for accurate scoring
-    2. LLM-powered analysis for explainable credit reports
+    Hybrid Credit Risk Agent:
+    1. Deterministic calculation of debt-to-income and credit minimums.
+    2. LLM analysis for personalized credit reporting.
     """
+    
     credit_score = state.get("credit_score") or 0
     debt = state.get("debt") or 0.0
     income = state.get("income") or 0.0

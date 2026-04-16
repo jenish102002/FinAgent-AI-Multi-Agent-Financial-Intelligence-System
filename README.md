@@ -97,11 +97,12 @@ graph TD
 │   │   └── risk_agent.py         # Financial evaluation
 │   ├── orchestrator/          
 │   │   ├── intent_parser.py      # LLM Information Extraction
-│   │   └── task_planner.py       # LangGraph routing definitions
+│   │   ├── task_planner.py       # LangGraph routing definitions
+│   │   └── aggregator.py         # Deterministic Decision Consolidation Engine
 │   ├── data/                     # Vector knowledge & CSV storage
-│   ├── graph.py                  # LangGraph Node configurations
-│   ├── state.py                  # Pydantic State specifications
-│   └── main.py                   # FastAPI Initialization point
+│   ├── graph.py                  # LangGraph parallel edge conditional router
+│   ├── state.py                  # TypedDict Native Memory Schema (Replaced Pydantic)
+│   └── main.py                   # FastAPI POST Endpoint using pure Python Dictionaries
 └── finagent-ui/                  # 🖥️ REACT FRONTEND
     ├── src/
     │   ├── features/             # Form panels, Agent cards, Badges
