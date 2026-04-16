@@ -3,9 +3,6 @@ load_dotenv() # Load keys for NVIDIA LLMs before import
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
-from state import AgentRequest
-from typing import Optional
 from graph import build_graph
 import logging
 
@@ -34,16 +31,16 @@ except Exception as e:
 async def health_check():
     return {"status": "ok", "message": "FinAgent Multi-Agent Orchestrator is running."}
 
+from typing import Dict, Any
+
 @app.post("/evaluate")
-async def evaluate(request: AgentRequest):
+async def evaluate(request: Dict[str, Any]):
     if graph is None:
         raise HTTPException(status_code=500, detail="Orchestration graph failed to initialize properly.")
 
     try:
-        # Pydantic explicitly converts the LIVE incoming JSON payload into a dictionary here.
-        # exclude_unset=True guarantees zero fallback defaults are sent downstream.
-        input_data = request.model_dump(exclude_unset=True, exclude_none=True)
-        result = await graph.ainvoke(input_data)
+        # Pass the raw dictionary directly into LangGraph
+        result = await graph.ainvoke(request)
         
         return {
             "status": "success",
