@@ -111,22 +111,23 @@ def fuzzy_sanctions_check(name: str, threshold: float = 0.80) -> dict:
 # ========================================================
 # 5. Compliance Agent (Multi-Layer Screening)
 # ========================================================
+from typing import Dict
+
 def compliance_agent(state: Dict) -> Dict:
     """
     Multi-Layer Regulatory Compliance Agent:
-    - Layer 1: OFAC SDN Sanctions Screening (Exact + Fuzzy Match)
-    - Layer 2: AML Transaction Threshold Analysis (CTR + EDD)
-    - Layer 3: FATF High-Risk Jurisdiction Check
-    - Layer 4: LLM-Powered Compliance Report Generation
+    Layer 1: OFAC SDN Array Screening
+    Layer 2: Dual Threshold AML Check
+    Layer 3: FATF Country Check
+    Layer 4: LLM Compliance Report Generation
     """
-
-    user_name_raw = state.get("user_name")
+    user_name_raw = state.get("user_name", "")
     user_name = user_name_raw.lower().strip() if user_name_raw else ""
 
-    country_raw = state.get("country")
+    country_raw = state.get("country", "")
     country = country_raw.upper().strip() if country_raw else ""
 
-    amount = state.get("amount") or 0
+    amount = state.get("amount") or 0.0
 
     flags = []
     status = "passed"

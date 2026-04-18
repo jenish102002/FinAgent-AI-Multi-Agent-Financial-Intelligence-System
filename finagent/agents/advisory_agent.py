@@ -45,9 +45,11 @@ def get_market_data(ticker: str) -> Dict:
 
 def advisory_agent(state: Dict) -> Dict:
     """
-    Financial Advisory Agent using purely Real-time Market Data and LLM Reasoning
+    Financial Advisory Agent: 
+    Provides insights using real-time Yahoo Finance data and LLM reasoning.
     """
-    user_query = state.get("user_query", "")
+    query = state.get("user_query", "")
+    risk_profile = state.get("risk_profile", "moderate")
     market_ticker = state.get("market_ticker")
     
     reasons = []
@@ -69,7 +71,7 @@ def advisory_agent(state: Dict) -> Dict:
             profile_str = ", ".join(profile_arr) if profile_arr else "No profile data provided"
 
             res = advisory_chain.invoke({
-                "query": user_query,
+                "query": query,
                 "profile": profile_str,
                 "ticker": market_ticker or "None specified",
                 "price": m_price

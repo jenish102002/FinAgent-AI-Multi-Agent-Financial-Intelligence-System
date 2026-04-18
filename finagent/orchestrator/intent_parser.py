@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Dict
+from typing import Dict, Any
 
 # Required LangChain/NVIDIA imports
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
