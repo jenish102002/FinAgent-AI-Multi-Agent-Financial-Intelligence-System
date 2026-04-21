@@ -1,171 +1,284 @@
-# FinAgent AI Orchestrator 🧠🚀
+# FinAgent AI 🧠💹
+### Multi-Agent Financial Intelligence System
 
-Welcome to the **FinAgent AI Orchestrator**, an advanced, state-of-the-art Multi-Agent Financial Intelligence System. Built with **LangGraph** and deployed via **FastAPI** with a truly customized Vanilla CSS **React** frontend. It leverages leading-edge **NVIDIA NIM APIs (LLaMA 3.1 8B Instruct)** alongside Real-time financial APIs and memory stores to autonomously orchestrate user intent into precision financial evaluations.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+  <img src="https://img.shields.io/badge/LangGraph-FF6B6B?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/NVIDIA_NIM-76B900?style=for-the-badge&logo=nvidia&logoColor=white"/>
+  <img src="https://img.shields.io/badge/FAISS-0066CC?style=for-the-badge"/>
+</p>
 
-## 🌟 Key Features
+<p align="center">
+  <b>An intelligent, production-grade AI system that autonomously orchestrates Fraud Detection, Credit Risk Analysis, Compliance Validation, and Financial Advisory — in parallel, in real-time.</b>
+</p>
 
-1. **Multi-Agent Architecture (LangGraph + Python):** Architected a multi-agent AI system orchestrating dynamic routing for fraud detection, credit risk, compliance validation, and financial advisory modules.
-2. **LLM Orchestration Layer:** Designed an advanced LLM orchestration layer relying on NVIDIA NIM (LLaMA 3.1) for routing based on user intent and transaction context. The decision engine consolidates multi-agent paths to output precise verdicts: **APPROVAL / REVIEW / ALERT**.
-3. **Behavioral Fraud Detection:** Built an active algorithmic fraud detection component utilizing behavioral analytics (velocity, geo-patterns, and spending limits) coupled with explainable AI risk scoring metrics.
-4. **Context-Aware RAG Advisory:** Integrated real-time market APIs (`yfinance`) with custom Retrieval-Augmented Generation (RAG) using FAISS vector stores to produce highly personalized, context-aware financial recommendations.
-5. **Glassmorphism Bespoke UI:** A beautifully engineered dark-mode React interface running 100% Vanilla CSS, securely executing requests over the FastAPI decision endpoints.
-
----
-
-## 🛠️ Technology Stack
-
-**Backend System:**
-* [Python 3.10+](https://www.python.org/)
-* [FastAPI](https://fastapi.tiangolo.com/) & Uvicorn (Robust ASYNC execution layer)
-* [LangGraph](https://python.langchain.com/docs/langgraph) (Cyclical execution and parallel nodes)
-* [NVIDIA NIM AI Endpoints](https://build.nvidia.com) (Server-side LLM inference endpoints utilizing the highly optimized Meta Llama 3.1 model architecture).
-* FAISS (Vector DB for Document RAG logic)
-* yFinance (Direct pipeline for active real-time data)
-
-**Frontend System:**
-* [React](https://reactjs.org/) + Vite (Lightning-fast Dev environment)
-* Custom Vanilla CSS (Frosted Glass aesthetics, variables, robust animation frames)
+<p align="center">
+  <a href="#-demo">View Demo</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-tech-stack">Tech Stack</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-features">Features</a>
+</p>
 
 ---
 
-## 🏗️ Architecture Diagrams
+## 🎯 What is FinAgent AI?
 
-### 1. LangGraph Multi-Agent Workflow
-The backend relies on cyclic graphs computing state in parallel. The Orchestrator dictates routing via an LLaMA 3.1 planner.
+FinAgent AI is a **Multi-Agent LLM System** built with **LangGraph** that routes a single user query through specialized AI agents simultaneously — delivering a consolidated financial decision in seconds.
 
-```mermaid
-graph TD
-    %% Node Styling Definitions
-    classDef frontend fill:#00ffaa,stroke:#000,stroke-width:2px,color:#0a0e17,font-weight:bold;
-    classDef backend fill:#4a90e2,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
-    classDef brain fill:#f5a623,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
-    classDef agents fill:#ff5e5e,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
-    classDef output fill:#28a745,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+**Example Query:**
+> *"I want to invest $200,000 into NVDA stock immediately. Will this large transfer affect my mortgage application given my $10,000 credit card debt?"*
 
-    UI[🖥️ React Frontend UI]:::frontend -->|JSON Payload| API(⚙️ FastAPI Endpoint):::backend
-    API --> Intent[🧠 Intent Parser Node]:::brain
-    Intent --> Planner{🧭 Task Planner Node}:::brain
-    
-    Planner -->|Parallel Routing| Switch((Agent Execution))
-    
-    Switch -->|If Required| Fraud[🛡️ Fraud Detection]:::agents
-    Switch -->|If Required| Risk[📊 Credit Risk]:::agents
-    Switch -->|If Required| Comp[⚖️ Compliance Validation]:::agents
-    Switch -->|If Required| Adv[📈 Financial Advisory]:::agents
-    
-    Fraud --> Consensus[Consolidation Engine]:::backend
-    Risk --> Consensus
-    Comp --> Consensus
-    Adv --> Consensus
-    
-    Consensus -->|Return APPROVAL/REVIEW/ALERT| API
+**FinAgent response in < 3 seconds:**
+- 🛡️ Fraud Agent → **No anomaly detected** (behavioral pattern normal)
+- 📊 Risk Agent → **REVIEW** (high exposure relative to debt ratio)
+- ⚖️ Compliance Agent → **APPROVED** (no sanctions match)
+- 📈 Advisory Agent → **NVDA current price: $XXX — moderate buy signal**
+- 🧠 Final Verdict → **⚠️ REVIEW — High risk investment relative to liability**
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🧠 **Multi-Agent Orchestration** | LangGraph-powered parallel agent execution with dynamic routing based on user intent |
+| 🛡️ **Behavioral Fraud Detection** | Velocity checks, geo-pattern analysis, spending limit anomalies with explainable AI scoring |
+| 📊 **Credit Risk Evaluation** | Real-time financial exposure analysis with structured risk scoring |
+| ⚖️ **AML/KYC Compliance** | OFAC sanctions list matching, KYC validation, and regulatory compliance checks |
+| 📈 **RAG-Powered Advisory** | FAISS vector store + yFinance real-time data for personalized investment recommendations |
+| ⚡ **LLM Orchestration Layer** | NVIDIA NIM (LLaMA 3.1 8B) for intent parsing and task planning |
+| 🎨 **Professional Dashboard** | Clean React frontend with refined Vanilla CSS design system |
+
+---
+
+## 🏗️ Architecture
+
+### Multi-Agent Workflow (LangGraph)
+
+```
+User Query (React UI)
+        │
+        ▼
+  FastAPI Endpoint
+        │
+        ▼
+  Intent Parser ──── LLaMA 3.1 (NVIDIA NIM)
+        │
+        ▼
+  Task Planner (LangGraph Router)
+        │
+   ┌────┴────────────────────┐
+   │         │               │              │
+   ▼         ▼               ▼              ▼
+Fraud     Credit Risk    Compliance    Advisory
+Agent      Agent          Agent         Agent
+   │         │               │              │
+   └────┬────────────────────┘
+        │
+        ▼
+  Consolidation Engine
+        │
+        ▼
+  APPROVAL / REVIEW / ALERT
 ```
 
-### 2. React UI Component Structure
-The frontend isolates UI layers into strictly decoupled Layouts, Features, and Services avoiding cyclic dependencies.
+### Key Design Decisions
+- **Parallel Execution** — All agents run simultaneously via LangGraph's cyclic graph, not sequentially
+- **TypedDict State Schema** — Lightweight native Python memory management (no Pydantic overhead)
+- **Deterministic Consolidation** — Rule-based final verdict engine ensures consistent, explainable outputs
+- **RAG + Live Data** — FAISS embeddings combined with yFinance API for grounded, real-time advisory
 
-```mermaid
-graph TD
-    %% Node Styling Definitions
-    classDef root fill:#9b59b6,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
-    classDef layout fill:#34495e,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
-    classDef components fill:#1abc9c,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
-    classDef network fill:#e67e22,stroke:#333,stroke-width:2px,color:#fff,font-weight:bold;
+---
 
-    App[App.jsx]:::root --> Home[pages/Home.jsx]:::layout
-    Home --> Container[layout/Container.jsx]:::layout
-    
-    Home --> Input[Features/InputPanel]:::components
-    Home --> Decision[Features/DecisionPanel]:::components
-    Home --> Agents[Features/AgentPanel]:::components
-    Home --> Explain[Features/ExplainPanel]:::components
-    
-    Input -->|Network Request| API(services/api.js):::network
-```
+## 🛠️ Tech Stack
+
+### Backend
+| Technology | Purpose |
+|---|---|
+| **Python 3.10+** | Core language |
+| **FastAPI + Uvicorn** | Async REST API layer |
+| **LangGraph** | Multi-agent orchestration with cyclic graph execution |
+| **NVIDIA NIM — LLaMA 3.1 8B** | LLM inference for intent parsing and planning |
+| **FAISS** | Vector database for RAG document retrieval |
+| **yFinance** | Real-time financial market data |
+| **LangChain** | LLM tooling and prompt management |
+
+### Frontend
+| Technology | Purpose |
+|---|---|
+| **React + Vite** | Fast, modular UI framework |
+| **Vanilla CSS** | Professional dashboard design system |
 
 ---
 
 ## 📂 Project Structure
 
 ```
-.
-├── finagent/                     # ⚙️ FASTAPI BACKEND ORCHESTRATION
-│   ├── agents/                   # Individual LLM Nodes
-│   │   ├── advisory_agent.py     # Live-Data & General Advice
-│   │   ├── compliance_agent.py   # Sanctions and KYC Logic
-│   │   ├── fraud_agent.py        # Velocity & Behavioral matching
-│   │   └── risk_agent.py         # Financial evaluation
-│   ├── orchestrator/          
-│   │   ├── intent_parser.py      # LLM Information Extraction
-│   │   ├── task_planner.py       # LangGraph routing definitions
-│   │   └── aggregator.py         # Deterministic Decision Consolidation Engine
-│   ├── data/                     # Vector knowledge & CSV storage
-│   ├── graph.py                  # LangGraph parallel edge conditional router
-│   ├── state.py                  # TypedDict Native Memory Schema (Replaced Pydantic)
-│   └── main.py                   # FastAPI POST Endpoint using pure Python Dictionaries
-└── finagent-ui/                  # 🖥️ REACT FRONTEND
-    ├── src/
-    │   ├── features/             # Form panels, Agent cards, Badges
-    │   ├── layout/               # Global semantic container structural rules
-    │   ├── pages/                # Home routing
-    │   ├── App.css               # Component level scoped styling logic
-    │   └── index.css             # Root level custom tokens and keyframes
-    └── package.json    
+FinAgent-AI/
+├── finagent/                        # FastAPI Backend
+│   ├── agents/
+│   │   ├── fraud_agent.py           # Behavioral fraud detection
+│   │   ├── risk_agent.py            # Credit risk scoring
+│   │   ├── compliance_agent.py      # AML/KYC/sanctions validation
+│   │   └── advisory_agent.py        # RAG-powered financial advisory
+│   ├── orchestrator/
+│   │   ├── intent_parser.py         # LLM-based query understanding
+│   │   ├── task_planner.py          # LangGraph routing logic
+│   │   └── aggregator.py            # Multi-agent verdict consolidation
+│   ├── data/
+│   │   ├── ofac_sdn.csv             # Sanctions list for AML matching
+│   │   └── finance_docs.txt         # RAG knowledge base
+│   ├── graph.py                     # LangGraph parallel edge router
+│   ├── state.py                     # TypedDict memory schema
+│   └── main.py                      # FastAPI POST /evaluate endpoint
+│
+└── finagent-ui/                     # React Frontend
+    └── src/
+        ├── features/                # InputPanel, AgentPanel, DecisionPanel,
+        │                            # CompliancePanel, ExplainPanel
+        ├── services/                # API service layer (axios)
+        ├── pages/                   # Home page with state management
+        └── index.css                # Design system tokens and animations
 ```
 
 ---
 
-## 🚀 Installation & Setup
+## 🚀 Quick Start
 
-Before starting, clone this repository locally and ensure you are using a macOS or Linux compatible terminal.
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- NVIDIA NIM API Key → [Get free key here](https://build.nvidia.com)
 
-### 1. Backend Setup
+### 1. Clone the Repository
+```bash
+git clone https://github.com/jenish102002/FinAgent-AI-Multi-Agent-Financial-Intelligence-System.git
+cd FinAgent-AI-Multi-Agent-Financial-Intelligence-System
+```
 
-Open a terminal and navigate to the backend service. Create your Python Virtual Environment and install the standard dependencies:
-
+### 2. Backend Setup
 ```bash
 cd finagent
 python -m venv finagent_env
-source finagent_env/bin/activate
-pip install fastapi uvicorn langchain langchain-core langchain-community langchain-nvidia-ai-endpoints pydantic yfinance faiss-cpu pandas python-dotenv
+source finagent_env/bin/activate  # Windows: finagent_env\Scripts\activate
+
+pip install fastapi uvicorn langchain langchain-core langchain-community \
+    langchain-nvidia-ai-endpoints pydantic yfinance faiss-cpu pandas python-dotenv
 ```
 
-### 2. Configure Environment Tokens
-
-Inside the `/finagent` directory, create a new local `.env` file containing your valid **NVIDIA API Key**.
-```env
-NVIDIA_API_KEY=nvapi-your-key-goes-here
+### 3. Configure Environment Variables
+```bash
+# Create .env file inside /finagent
+echo "NVIDIA_API_KEY=nvapi-your-key-here" > .env
 ```
 
-### 3. Initialize the Databases
-* Ensure that `data/ofac_sdn.csv` is present for AML mapping testing. You can populate it manually to test matching functionalities.
-* Ensure `data/finance_docs.txt` is present to test standard RAG embeddings!
+### 4. Initialize Data Files
+- Place `ofac_sdn.csv` in `finagent/data/` for AML sanctions testing
+- Place `finance_docs.txt` in `finagent/data/` for RAG embeddings
 
-### 4. Run the Backend API
-
-Start the live ASGI server via `uvicorn`:
+### 5. Start the Backend
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
-*The Orchestrator will now be actively listening to `POST` JSON payloads to `http://127.0.0.1:8000/evaluate`.*
+> API live at: `http://127.0.0.1:8000/evaluate`
+
+### 6. Start the Frontend
+```bash
+cd ../finagent-ui
+npm install
+npm run dev
+```
+> UI live at: `http://localhost:5173`
 
 ---
 
-### 5. Frontend Setup
+## 📡 API Reference
 
-Open a new terminal session, navigate to the User Interface workspace, and install Node dependencies.
-```bash
-cd finagent-ui
-npm install
+### `POST /evaluate`
+
+**Request Body (GraphState fields):**
+```json
+{
+  "user_query": "I want to invest $200,000 in NVDA stock immediately",
+  "user_name": "John Doe",
+  "amount": 200000,
+  "avg_amount": 5000,
+  "frequency": 3,
+  "usual_frequency": 1,
+  "location": "Mumbai",
+  "usual_location": "New York",
+  "country": "US",
+  "credit_score": 720,
+  "income": 120000,
+  "debt": 10000,
+  "risk_profile": "moderate",
+  "market_ticker": "NVDA"
+}
 ```
 
-Start the Vite development build:
-```bash
-npm run dev
+**Response:**
+```json
+{
+  "status": "success",
+  "intent": "advisory",
+  "final_decision": {
+    "decision": "REVIEW",
+    "reasons": ["High transaction amount relative to average"],
+    "details": {
+      "fraud": { "score": 30, "flag": false, "analysis": "..." },
+      "risk": { "score": 20, "eligible": true, "analysis": "..." },
+      "compliance": { "status": "passed", "risk_level": "LOW", "analysis": "..." },
+      "advisory": { "recommendation": "...", "market_data": { "ticker": "NVDA", "price": 135.50 } }
+    }
+  }
+}
 ```
 
-The terminal will provide a localized URL (typically `http://localhost:5173`). Click it to launch your browser! 
+---
 
-### 🎉 Play Around
-Input an organic query like *"I want to invest $200,000 into NVDA stock immediately from my account, but I also need to know if this large transfer affects my ability to get a mortgage next month given my $10,000 credit card debt."* 
-Pass optional metrics into the UI layout form natively and see how the Orchestrator distributes decision trees simultaneously!
+## 🧪 Sample Queries to Try
+
+```
+"Transfer $50,000 to an overseas account urgently from 3 different locations"
+→ Expected: 🚨 ALERT — High fraud probability (geo-anomaly + velocity)
+
+"Should I invest $5,000 in Apple stock with no existing debt?"
+→ Expected: ✅ APPROVAL — Low risk, positive advisory signal
+
+"I need a $100,000 loan but have $80,000 in credit card debt"
+→ Expected: 🔁 REVIEW — Credit risk threshold exceeded
+```
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Deploy on Render (Backend) + Vercel (Frontend)
+- [ ] Add user authentication with JWT
+- [ ] Integrate live news sentiment analysis agent
+- [ ] Add portfolio tracking dashboard
+- [ ] Support multi-turn conversation memory
+
+---
+
+## 👨‍💻 Author
+
+**Jenish Jagdishkumar Patel**
+GRC Intern @ Intel Corporation | M.Tech CS @ SVNIT | Ex-ISRO Intern
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/jenish102002)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jenish102002)
+[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](your-portfolio-link-here)
+
+---
+
+## ⭐ Support
+
+If you found this project useful or interesting, please consider giving it a **⭐ star** on GitHub — it helps other developers discover it!
+
+---
+
+<p align="center">Built with ❤️ by Jenish Patel | Open to SDE / GenAI Roles</p>

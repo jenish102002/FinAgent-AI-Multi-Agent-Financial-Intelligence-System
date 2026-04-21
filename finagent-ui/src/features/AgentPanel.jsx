@@ -1,121 +1,93 @@
-export default function AgentPanel({ details }) {
-    if (!details) return null;
+function ScoreBar({ score, max = 100 }) {
+    const pct = Math.min((score / max) * 100, 100);
+    const c = score >= 60 ? "var(--red)" : score >= 30 ? "var(--amber)" : "var(--green)";
+    return (
+        <div className="sbar">
+            <div className="sbar-track">
+                <div className="sbar-fill" style={{ width: `${pct}%`, background: c }} />
+            </div>
+            <span className="sbar-num" style={{ color: c }}>{score}/{max}</span>
+        </div>
+    );
+}
+
+const CFG = {
+    fraud: {
+        name: "Fraud Detection",
+        css: "fraud",
+        stats: (d) => [
+            { k: "Score", v: <ScoreBar score={d.score ?? 0} /> },
+            { k: "Flag", v: d.flag
+                ? <span className="mono fw7" style={{ color: "var(--red)" }}>DETECTED</span>
+                : <span className="mono fw7" style={{ color: "var(--green)" }}>CLEAR</span>
+            },
+            ...((d.reasons || []).length ? [{ k: "Triggers", v: (d.reasons || []).join(", ") }] : []),
+        ],
+        analysis: d => d.analysis,
+        aClass: d => d.flag ? "bad" : "ok",
+        badge: d => d.flag ? "tag-red" : "tag-green",
+        badgeText: d => d.flag ? "FLAGGED" : "CLEAR",
+    },
+    risk: {
+        name: "Credit Risk",
+        css: "risk",
+        stats: (d) => [
+            { k: "Score", v: <ScoreBar score={d.score ?? 0} /> },
+            { k: "Eligible", v: d.eligible
+                ? <span className="mono fw7" style={{ color: "var(--green)" }}>YES</span>
+                : <span className="mono fw7" style={{ color: "var(--red)" }}>NO</span>
+            },
+            ...((d.reasons || []).length ? [{ k: "Factors", v: (d.reasons || []).join(", ") }] : []),
+        ],
+        analysis: d => d.analysis,
+        aClass: d => d.eligible ? "ok" : "warn",
+        badge: d => d.eligible ? "tag-green" : "tag-amber",
+        badgeText: d => d.eligible ? "ELIGIBLE" : "DENIED",
+    },
+    advisory: {
+        name: "Advisory",
+        css: "advisory",
+        stats: (d) => [
+            ...(d.market_data?.ticker ? [
+                { k: "Ticker", v: <span className="mono fw7">{d.market_data.ticker}</span> },
+                { k: "Price", v: <span className="mono fw7" style={{ color: "var(--accent)", fontSize: 16 }}>${d.market_data.price}</span> },
+            ] : []),
+            ...((d.reasons || []).map((r, i) => ({ k: `Signal ${i+1}`, v: r }))),
+        ],
+        analysis: d => d.recommendation,
+        aClass: () => "",
+        badge: () => "tag-blue",
+        badgeText: () => "ACTIVE",
+    },
+};
+
+export default function AgentPanel({ agentKey, data }) {
+    const c = CFG[agentKey];
+    if (!c || !data) return null;
+
+    const stats = c.stats(data);
+    const analysis = c.analysis(data);
 
     return (
-        <div className="panel" style={{ marginTop: '2rem' }}>
-            <h2 className="panel-title">
-                <span style={{ fontSize: '1.5rem' }}>🤖</span> Agent Sub-Modules
-            </h2>
-            <div className="agents-grid">
-                
-                {/* Fraud Agent */}
-                {details.fraud && (
-                    <div className="agent-card">
-                        <div className="agent-header">
-                            <span className="agent-name">🛡️ Fraud Agent</span>
-                            <span className="agent-status-icon">
-                                {details.fraud.status === 'not_run' ? '⏸️' : (details.fraud.flag ? '🔴' : '🟢')}
-                            </span>
-                        </div>
-                        {details.fraud.status === 'not_run' ? (
-                            <p style={{ color: 'var(--text-secondary)' }}>Skipped by Orchestrator</p>
-                        ) : (
-                            <>
-                                <div className="agent-stat">
-                                    <span className="stat-label">Risk Score</span>
-                                    <span className="stat-value">{details.fraud.score} / 100</span>
-                                </div>
-                                <div className="agent-stat">
-                                    <span className="stat-label">Flagged</span>
-                                    <span className="stat-value" style={{ color: details.fraud.flag ? 'var(--status-alert)' : 'var(--status-approve)'}}>
-                                        {details.fraud.flag ? "Yes" : "No"}
-                                    </span>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                )}
-
-                {/* Risk Agent */}
-                {details.risk && (
-                    <div className="agent-card">
-                        <div className="agent-header">
-                            <span className="agent-name">📊 Risk Agent</span>
-                            <span className="agent-status-icon">
-                                {details.risk.status === 'not_run' ? '⏸️' : (details.risk.eligible ? '🟢' : '🔴')}
-                            </span>
-                        </div>
-                        {details.risk.status === 'not_run' ? (
-                            <p style={{ color: 'var(--text-secondary)' }}>Skipped by Orchestrator</p>
-                        ) : (
-                            <>
-                                <div className="agent-stat">
-                                    <span className="stat-label">Credit Score</span>
-                                    <span className="stat-value">{details.risk.score || 'N/A'}</span>
-                                </div>
-                                <div className="agent-stat">
-                                    <span className="stat-label">Eligible</span>
-                                    <span className="stat-value" style={{ color: details.risk.eligible ? 'var(--status-approve)' : 'var(--status-alert)'}}>
-                                        {details.risk.eligible ? "Yes" : "No"}
-                                    </span>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                )}
-
-                {/* Compliance Agent */}
-                {details.compliance && (
-                    <div className="agent-card">
-                        <div className="agent-header">
-                            <span className="agent-name">⚖️ Compliance Agent</span>
-                            <span className="agent-status-icon">
-                                {details.compliance.status === 'not_run' ? '⏸️' : (details.compliance.status === 'passed' ? '🟢' : '🔴')}
-                            </span>
-                        </div>
-                        {details.compliance.status === 'not_run' ? (
-                            <p style={{ color: 'var(--text-secondary)' }}>Skipped by Orchestrator</p>
-                        ) : (
-                            <div className="agent-stat">
-                                <span className="stat-label">Status</span>
-                                <span className="stat-value" style={{ 
-                                    textTransform: 'capitalize',
-                                    color: details.compliance.status === 'passed' ? 'var(--status-approve)' : 'var(--status-alert)'
-                                }}>
-                                    {details.compliance.status}
-                                </span>
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* Advisory Agent */}
-                {details.advisory && details.advisory.status !== 'not_run' && (
-                    <div className="agent-card" style={{ gridColumn: 'span 1' }}>
-                        <div className="agent-header">
-                            <span className="agent-name">📈 Advisory Agent</span>
-                            <span className="agent-status-icon">🟢</span>
-                        </div>
-                        {details.advisory.market_data && (
-                            <div className="agent-stat">
-                                <span className="stat-label">{details.advisory.market_data.ticker} Market Price</span>
-                                <span className="stat-value">${details.advisory.market_data.price}</span>
-                            </div>
-                        )}
-                    </div>
-                )}
-                
-                {/* Advisory Recommendation (Full Width) */}
-                {details.advisory && details.advisory.recommendation && (
-                    <div className="advisory-box">
-                        <h4>💡 Financial Recommendation</h4>
-                        <div className="advisory-text">
-                            {details.advisory.recommendation}
-                        </div>
-                    </div>
-                )}
-
+        <div className={`a-card ${c.css} anim-up`}>
+            <div className="a-card-head">
+                <span className="a-card-name">{c.name}</span>
+                <span className={`tag ${c.badge(data)}`}>{c.badgeText(data)}</span>
             </div>
+
+            {stats.map(({ k, v }, i) => (
+                <div key={i} className="sr">
+                    <span className="sr-k">{k}</span>
+                    <span className="sr-v">{typeof v === "string" ? <span style={{ fontFamily: "var(--font)", fontSize: 12, color: "var(--text-2)" }}>{v}</span> : v}</span>
+                </div>
+            ))}
+
+            {analysis && (
+                <div className="a-box">
+                    <div className="a-box-label">LLM Analysis</div>
+                    <div className={`a-box-text ${c.aClass(data)}`}>{analysis}</div>
+                </div>
+            )}
         </div>
     );
 }
