@@ -23,7 +23,7 @@ export default function Home() {
             setIntent(res.data.intent);
         } catch (err) {
             console.error(err);
-            setError(err?.response?.data?.detail || "Backend unreachable — is it running on port 8000?");
+            setError(err?.response?.data?.detail || "Backend is waking up (cold start ~30s). Please try again in a moment.");
         }
         setLoading(false);
     };
